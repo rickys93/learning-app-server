@@ -42,7 +42,7 @@ class Answer {
         if (response.rows.length < 1) {
             throw new Error("Unable to locate answers.");
         } else {
-            return new Answer(response.rows[0]);
+            return response.rows.map((g) => new Answer(g));
         }
     }
 
