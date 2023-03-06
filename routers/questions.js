@@ -4,7 +4,10 @@ const questionsController = require("../controllers/questions");
 
 const questionsRouter = Router();
 
-questionsRouter.get("/:categoryId", questionsController.getQuestionsByCategory);
+questionsRouter.get(
+    "/categories/:categoryId",
+    questionsController.getQuestionsByCategory
+);
 questionsRouter.get("/", questionsController.index);
 questionsRouter.post("/", questionsController.create);
 questionsRouter.get("/:id", questionsController.show);

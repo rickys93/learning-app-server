@@ -48,9 +48,9 @@ async function show(req, res) {
 async function create(req, res) {
     try {
         const data = req.body;
-        const newCategory = await Question.create(data);
+        const newQuestion = await Question.create(data);
 
-        res.status(201).json(newCategory);
+        res.status(201).json(newQuestion);
     } catch (err) {
         res.status(404).json({ error: err.message });
     }
