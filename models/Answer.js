@@ -39,7 +39,7 @@ class Answer {
             "SELECT * FROM answers WHERE question_id = $1",
             [question_id]
         );
-        if (response.rows.length != 1) {
+        if (response.rows.length < 1) {
             throw new Error("Unable to locate answers.");
         } else {
             return new Answer(response.rows[0]);
