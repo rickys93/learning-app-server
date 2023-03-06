@@ -5,6 +5,12 @@ async function index(req, res) {
     try {
         const questions = await Question.getAll();
 
+        // add the answers for each question
+        for (q of questions) {
+            const answers = await Answer.getByQuestionId(q.id);
+            q.answers = answers;
+        }
+
         res.status(200).json(questions);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -38,7 +44,11 @@ async function getQuestionsByCategory(req, res) {
 async function show(req, res) {
     try {
         const id = parseInt(req.params.id);
-        const snack = await Question.getOneById(id);
+        const question = await Question.getOneById(id);
+
+        const answers = await Answer.getByQuestionId(question.id);
+        question.answers = answers;
+
         res.status(200).json(snack);
     } catch (err) {
         res.status(404).json({ error: err.message });
