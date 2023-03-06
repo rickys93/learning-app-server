@@ -4,16 +4,16 @@ const app = require("../../api");
 // Mock the users controller
 jest.mock("../../controllers/users", () => ({
     authorize: jest.fn((req, res) => {
-        res.status(201).json({ id: 1 });
+        res.sendStatus(201);
     }),
     register: jest.fn((req, res) => {
-        res.status(200).json([1, 2]);
+        res.sendStatus(200);
     }),
     login: jest.fn((req, res) => {
-        res.status(200).json([1, 2]);
+        res.sendStatus(200);
     }),
     logout: jest.fn((req, res) => {
-        res.status(204).json([1]);
+        res.sendStatus(204);
     }),
     authenticator: jest.fn((req, res, next) => {
         next();
@@ -36,7 +36,6 @@ describe("Users Router", () => {
 
     xtest("GET /users/authorize should return 201", async () => {
         const res = await request(app).get("/users/authorize");
-        expect(res.statusCode).toBe(201);
-        expect(res.body).toHaveProperty("id");
+        expect(questionsController.authorize).toHaveBeenCalled();
     });
 });

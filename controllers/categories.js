@@ -13,8 +13,8 @@ async function index(req, res) {
 async function show(req, res) {
     try {
         const id = parseInt(req.params.id);
-        const snack = await Category.getOneById(id);
-        res.status(200).json(snack);
+        const category = await Category.getOneById(id);
+        res.status(200).json(category);
     } catch (err) {
         res.status(404).json({ error: err.message });
     }

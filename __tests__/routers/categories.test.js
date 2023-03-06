@@ -1,13 +1,18 @@
 const request = require("supertest");
 const app = require("../../api");
 
+const categoriesController = require("../../controllers/categories");
+
 // Mock the categories controller
 jest.mock("../../controllers/categories", () => ({
     create: jest.fn((req, res) => {
-        res.status(201).json({ id: 1 });
+        res.sendStatus(201);
     }),
     index: jest.fn((req, res) => {
-        res.status(200).json([1, 2]);
+        res.sendStatus(200);
+    }),
+    show: jest.fn((req, res) => {
+        res.sendStatus(200);
     }),
 }));
 
@@ -25,18 +30,18 @@ describe("Categories Router", () => {
         api.close(done);
     });
 
-    test("POST /categories should return 201", async () => {
-        const res = await request(app).post("/categories").send({
+    test("POST /categories should call create function", async () => {
+        await request(app).post("/categories").send({
             name: "Test Category",
             description: "This is a test category",
         });
-        expect(res.statusCode).toBe(201);
-        expect(res.body).toHaveProperty("id");
+
+        expect(categoriesController.create).toHaveBeenCalledTimes(1);
     });
 
-    test("GET /categories should return 200", async () => {
-        const res = await request(app).get("/categories");
-        expect(res.statusCode).toBe(200);
-        expect(res.body).toStrictEqual([1, 2]);
+    test("GET /categories should call index function", async () => {
+        await request(app).get("/categories");
+
+        expect(categoriesController.index).toHaveBeenCalledTimes(1);
     });
 });
