@@ -1,4 +1,5 @@
 const Question = require("../models/Question");
+const Answer = require("../models/Answer");
 
 async function index(req, res) {
     try {
@@ -21,6 +22,12 @@ async function getQuestionsByCategory(req, res) {
             categoryId,
             limit
         );
+
+        // add the answers for each question
+        for (q of questions) {
+            const answers = await Answer.getByQuestionId(q.id);
+            q.answers = answers;
+        }
 
         res.status(200).json(questions);
     } catch (error) {
