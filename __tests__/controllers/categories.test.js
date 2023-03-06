@@ -66,19 +66,34 @@ describe("Categories Controller", () => {
             });
             expect(Category.getOneById).toHaveBeenCalledWith(id);
         });
+    });
 
-        // test("should return 500 and an error message when an error occurs", async () => {
-        //     const id = 1;
+    describe("POST /categories", () => {
+        test("should return 201 and a category object", async () => {
+            const id = 1;
+            const data = { id, name: "Category 1" };
 
-        //     Category.getOneById.mockRejectedValue(
-        //         new Error("Internal server error")
-        //     );
+            Category.getOneById.mockResolvedValue(data);
 
-        //     const response = await request(app).get(`/categories/${id}`);
+            const response = await request(app).get(`/categories/${id}`);
 
-        //     expect(response.status).toBe(500);
-        //     expect(response.body).toEqual({ error: "Internal server error" });
-        //     expect(Category.getOneById).toHaveBeenCalledWith(id);
-        // });
+            expect(response.status).toBe(201);
+            expect(response.body).toEqual(data);
+            expect(Category.create).create(id);
+        });
+
+        test("should return 404 and an error message when category is not found", async () => {
+            const id = 999;
+
+            Category.getOneById.mockResolvedValue(null);
+
+            const response = await request(app).get(`/categories/${id}`);
+
+            expect(response.status).toBe(404);
+            expect(response.body).toEqual({
+                error: `Category with id ${id} not found`,
+            });
+            expect(Category.getOneById).toHaveBeenCalledWith(id);
+        });
     });
 });

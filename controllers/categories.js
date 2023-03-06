@@ -14,6 +14,9 @@ async function show(req, res) {
     try {
         const id = parseInt(req.params.id);
         const category = await Category.getOneById(id);
+        if (!category) {
+            throw new Error(`Category with id ${id} not found`);
+        }
         res.status(200).json(category);
     } catch (err) {
         res.status(404).json({ error: err.message });
