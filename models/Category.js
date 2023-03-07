@@ -27,10 +27,10 @@ class Category {
     }
 
     static async create(data) {
-        const { name, description, userId } = data;
+        const { name, description, user_id } = data;
         const response = await db.query(
             "INSERT INTO categories (name, description, user_id) VALUES ($1, $2, $3) RETURNING *;",
-            [name, description, userId]
+            [name, description, user_id]
         );
         return response.rows.map((w) => new Category(w));
     }
