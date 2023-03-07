@@ -2,7 +2,8 @@ const Category = require("../models/Category");
 
 async function index(req, res) {
     try {
-        const categories = await Category.getAll();
+        const userId = req.get("user-id")
+        const categories = await Category.getAll(userId);
 
         res.status(200).json(categories);
     } catch (error) {
