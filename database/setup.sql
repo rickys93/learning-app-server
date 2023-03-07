@@ -22,8 +22,10 @@ CREATE TABLE tokens (
 
 CREATE TABLE categories (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  user_id INT,
   name VARCHAR(50) NOT NULL,
-  description VARCHAR(500) NOT NULL
+  description VARCHAR(500) NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE questions (
