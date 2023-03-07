@@ -1,28 +1,28 @@
 const db = require("../database/connect");
 
 class User {
-    constructor({ user_id, username, password, is_admin }) {
-        this.id = user_id;
-        this.username = username;
+    constructor({ id, first_name, last_name, email, password }) {
+        this.id = id;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
         this.password = password;
-        this.isAdmin = is_admin;
     }
 
     static async getOneById(id) {
-        const response = await db.query(
-            "SELECT * FROM users WHERE user_id = $1",
-            [id]
-        );
+        const response = await db.query("SELECT * FROM users WHERE id = $1", [
+            id,
+        ]);
         if (response.rows.length != 1) {
             throw new ERROR("Unable to locate user.");
         }
         return new User(response.rows[0]);
     }
 
-    static async getOneByUsername(username) {
+    static async getOneByEmail(email) {
         const response = await db.query(
-            "SELECT * FROM users WHERE username = $1",
-            [username]
+            "SELECT * FROM users WHERE email = $1",
+            [email]
         );
         if (response.rows.length != 1) {
             throw new Error("Unable to locate user.");
@@ -30,21 +30,21 @@ class User {
         return new User(response.rows[0]);
     }
 
-    static async usernameTaken(username) {
+    static async emailInUse(email) {
         const response = await db.query(
-            "SELECT * FROM users WHERE username = $1",
-            [username]
+            "SELECT * FROM users WHERE email = $1",
+            [email]
         );
         return response.rows.length != 0;
     }
 
     static async create(data) {
-        const { username, password, isAdmin } = data;
+        const { first_name, last_name, email, password } = data;
         let response = await db.query(
-            "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING user_id;",
-            [username, password]
+            "INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING id;",
+            [first_name, last_name, email, password]
         );
-        const newId = response.rows[0].user_id;
+        const newId = response.rows[0].id;
         const newUser = await User.getOneById(newId);
         return newUser;
     }

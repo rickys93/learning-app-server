@@ -8,12 +8,23 @@ async function register(req, res) {
         const data = req.body;
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(data.password, salt);
-        if (await User.usernameTaken(data.username)) {
-            throw new Error("Username already taken.");
+        if (
+            !"first_name" in data ||
+            !"last_name" in data ||
+            !"email" in data ||
+            !"password" in data
+        ) {
+            throw new Error("Please include all fields.");
+        }
+        if (await User.emailInUse(data.email)) {
+            throw new Error("Email already in use.");
         }
 
-        const result = await User.create({ ...data, password: hashedPassword });
-        return res.status(201).json({ message: "Register successful!" });
+        const user = await User.create({ ...data, password: hashedPassword });
+        const token = await Token.create(user.id);
+        delete user.password;
+        user.token = token.token;
+        return res.status(201).json({ authenticated: true, user });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -22,7 +33,7 @@ async function register(req, res) {
 async function login(req, res) {
     try {
         const data = req.body;
-        const user = await User.getOneByUsername(data.username);
+        const user = await User.getOneByEmail(data.email);
 
         if (!user) {
             return res.status(404).json({
@@ -36,8 +47,10 @@ async function login(req, res) {
         if (!authenticated) {
             throw new Error("Incorrect credentials");
         } else {
-            const token = await Token.create(user["id"]);
-            res.status(200).json({ authenticated: true, token: token.token });
+            const token = await Token.create(user.id);
+            delete user.password;
+            user.token = token.token;
+            return res.status(200).json({ authenticated: true, user });
         }
     } catch (error) {
         res.status(403).json({ error: error.message });
@@ -79,7 +92,7 @@ async function authorize(req, res) {
         }
 
         const user = await User.getOneById(validToken.user_id);
-        res.json({ username: user.username });
+        return res.status(200).json({ authenticated: true, user });
     } catch (error) {
         res.status(404).json({
             error: error.message,
