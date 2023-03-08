@@ -56,17 +56,17 @@ CREATE TABLE user_answers (
 INSERT INTO categories (name, description)
 VALUES
   ('History', 'Questions related to historical events'),
-  ('Art', 'Questions related to scientific concepts'),
-  ('Music', 'Questions related to music'),
-  ('English', 'Questions related to English grammar and literature'),
+  ('Art', 'Questions related to Art and design concepts'),
+  ('Music', 'Questions related to musicical concepts'),
+  ('English', 'Questions related to English literature'),
   ('Math', 'Questions related to mathematical concepts'),
-  ('Physics', 'Questions related to physics'' concepts'),
-  ('Chemistry', 'Questions related to chemistry'),
-  ('Biology', 'Questions related to bilogy, health and environement');
+  ('Physics', 'Questions related to physics concepts'),
+  ('Chemistry', 'Questions related to chemistry concepts'),
+  ('Biology', 'Questions related to biology concepts');
 
 INSERT INTO questions (category_id, question)
 VALUES
-  (1, 'In which  year the second world war started?'),
+  (1, 'In which year the second world war started?'),
   (1, 'Who was British Prime Minister when WWII started?'),
   (1, 'When did the reign of Queen Elizabeth II start?'),
   (1, 'How many Cabinet positions are currently in the government of the United Kingdom?'),
@@ -469,4 +469,3 @@ VALUES
   (80,'Colds and flu are not viruses',FALSE),
   (80,'Colds and flu are caused by bacteria that are resistant to antibiotics',FALSE),
   (80,'Antibiotics work too slowly',FALSE);
-
