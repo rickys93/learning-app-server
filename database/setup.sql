@@ -46,12 +46,10 @@ CREATE TABLE answers (
 CREATE TABLE user_answers (
   user_id INT NOT NULL,
   question_id INT NOT NULL,
-  answer_id INT NOT NULL,
   correct BOOLEAN NOT NULL,
   timestamp TIMESTAMP NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (question_id) REFERENCES questions(id),
-  FOREIGN KEY (answer_id) REFERENCES answers(id),
   PRIMARY KEY (user_id, question_id, timestamp)
 );
 
