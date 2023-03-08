@@ -18,7 +18,8 @@
     "test": "jest --watchAll",
     "start": "node index.js",
     "dev": "nodemon -L index.js",
-    "setup-db": "node ./database/setup.js"
+    "setup-db": "node ./database/setup.js",
+    "coverage" : "jest --coverage"
   },
   "name": "learning-app-server",
   "description": "",

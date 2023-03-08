@@ -1,9 +1,10 @@
 const db = require("../database/connect");
 
 class Category {
-    constructor({ id, name, description }) {
+    constructor({ id, name, user_id, description }) {
         this.id = id;
         this.name = name;
+        this.user_id = user_id;
         this.description = description;
     }
 
