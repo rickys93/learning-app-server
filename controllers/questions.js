@@ -77,10 +77,19 @@ async function destroy(req, res) {
     }
 }
 
+async function logAnswer(req, res) {
+    try {
+        res.sendStatus(501)
+    } catch (err) {
+        res.status(500).json({error: err.message})
+    }
+}
+
 module.exports = {
     index,
     show,
     create,
     destroy,
     getQuestionsByCategory,
+    logAnswer
 };

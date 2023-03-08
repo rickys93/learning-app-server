@@ -13,4 +13,6 @@ questionsRouter.post("/", questionsController.create);
 questionsRouter.get("/:id", questionsController.show);
 questionsRouter.delete("/:id", questionsController.destroy);
 
+questionsRouter.post("/answerlog", questionsController.logAnswer);
+
 module.exports = questionsRouter;
