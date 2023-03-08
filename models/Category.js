@@ -33,7 +33,7 @@ class Category {
             "INSERT INTO categories (name, description, user_id) VALUES ($1, $2, $3) RETURNING *;",
             [name, description, user_id]
         );
-        return response.rows.map((w) => new Category(w));
+        return new Category(response.rows[0]);
     }
 }
 
