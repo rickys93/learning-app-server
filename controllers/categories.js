@@ -1,8 +1,11 @@
 const Category = require("../models/Category");
+const Question = require("../models/Question");
+const Answer = require("../models/Answer");
 
 async function index(req, res) {
     try {
-        const categories = await Category.getAll();
+        const userId = req.query.user_id;
+        const categories = await Category.getAll(userId || 0);
 
         res.status(200).json(categories);
     } catch (error) {
@@ -13,8 +16,11 @@ async function index(req, res) {
 async function show(req, res) {
     try {
         const id = parseInt(req.params.id);
-        const snack = await Category.getOneById(id);
-        res.status(200).json(snack);
+        const category = await Category.getOneById(id);
+        if (!category) {
+            throw new Error(`Category with id ${id} not found`);
+        }
+        res.status(200).json(category);
     } catch (err) {
         res.status(404).json({ error: err.message });
     }
@@ -31,8 +37,21 @@ async function create(req, res) {
     }
 }
 
+async function destroy(req, res) {
+    try {
+        const id = parseInt(req.params.id);
+        const category = await Category.getOneById(id);
+        const questions = await Question.destroyAllInCategory(id);
+        const result = await category.destroy();
+        res.status(204).json(result);
+    } catch (err) {
+        res.status(404).json({ error: err.message });
+    }
+}
+
 module.exports = {
     index,
     show,
     create,
+    destroy,
 };
