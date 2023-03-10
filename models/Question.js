@@ -1,4 +1,5 @@
 const db = require("../database/connect");
+const Answer = require("../models/Answer");
 
 class Question {
     constructor({ id, category_id, question }) {
@@ -53,6 +54,22 @@ class Question {
         );
 
         return new Question(response.rows[0]);
+    }
+
+    static async destroyAllInCategory(id) {
+        const response = await db.query(
+            "SELECT * FROM questions WHERE category_id = $1;",
+            [id]
+        );
+        const questions = response.rows.map((g) => new Question(g));
+        for (let q of questions) {
+            const response = await db.query(
+                "DELETE FROM answers WHERE question_id = $1 RETURNING *;",
+                [q.id]
+            );
+            q.destroy();
+        }
+        return response.rows.map((g) => new Question(g));
     }
 }
 

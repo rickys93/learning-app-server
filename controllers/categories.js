@@ -1,4 +1,6 @@
 const Category = require("../models/Category");
+const Question = require("../models/Question");
+const Answer = require("../models/Answer");
 
 async function index(req, res) {
     try {
@@ -39,6 +41,7 @@ async function destroy(req, res) {
     try {
         const id = parseInt(req.params.id);
         const category = await Category.getOneById(id);
+        const questions = await Question.destroyAllInCategory(id);
         const result = await category.destroy();
         res.status(204).json(result);
     } catch (err) {
