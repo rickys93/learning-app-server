@@ -44,22 +44,22 @@ Endpoints
 API URL base: http://localhost:3000/
 
 ### /categories
--/ GET Returns a JSON object containing all categories.
--/:id GET Returns a JSON object representing a single category from the collection, selected by :id.
--/ POST Accepts a JSON object and creates a new category.
--/:id DELETE Deletes a specific category, selected by :id.
+- / GET Returns a JSON object containing all categories.
+- /:id GET Returns a JSON object representing a single category from the collection, selected by :id.
+- / POST Accepts a JSON object and creates a new category.
+- /:id DELETE Deletes a specific category, selected by :id.
 ### /questions
--/categories/:categoryId GET Returns a JSON object containing all questions associated with a specific category, selected by :categoryId.
--/ GET Returns a JSON object containing all questions.
--/ POST Accepts a JSON object and creates a new question.
--/:id GET Returns a JSON object representing a single question from the collection, selected by :id.
--/:id DELETE Deletes a specific question, selected by :id.
--/answerlog POST Accepts a JSON object and logs the user's answer to a question.
+- /categories/:categoryId GET Returns a JSON object containing all questions associated with a specific category, selected by :categoryId.
+- / GET Returns a JSON object containing all questions.
+- / POST Accepts a JSON object and creates a new question.
+- /:id GET Returns a JSON object representing a single question from the collection, selected by :id.
+- /:id DELETE Deletes a specific question, selected by :id.
+- /answerlog POST Accepts a JSON object and logs the user's answer to a question.
 ### /users
--/authorize GET Returns a JSON object containing the user's authorization status.
--/register POST Accepts a JSON object and creates a new user.
--/login POST Accepts a JSON object containing the user's credentials and logs the user in.
--/logout POST Logs the user out.
+- /authorize GET Returns a JSON object containing the user's authorization status.
+- /register POST Accepts a JSON object and creates a new user.
+- /login POST Accepts a JSON object containing the user's credentials and logs the user in.
+- /logout POST Logs the user out.
 
 Use an API testing platform such as Hoppscotch to test the API.
 
