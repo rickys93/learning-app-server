@@ -1,5 +1,6 @@
 const Question = require("../models/Question");
 const Answer = require("../models/Answer");
+const UserAnswer = require("../models/UserAnswer");
 
 async function index(req, res) {
     try {
@@ -88,7 +89,10 @@ async function destroy(req, res) {
 
 async function logAnswer(req, res) {
     try {
-        res.sendStatus(501);
+        const data = req.body;
+        const newUserAnswer = await UserAnswer.create(data);
+
+        res.status(201).json(newUserAnswer);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
