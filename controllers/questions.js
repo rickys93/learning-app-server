@@ -58,8 +58,17 @@ async function show(req, res) {
 async function create(req, res) {
     try {
         const data = req.body;
-        const newQuestion = await Question.create(data);
-
+        if (data.answers.length !== 4) {
+            throw new Error("Not enough answers provided.");
+        }
+        if (!data.question.question || !data.question.category_id) {
+            throw new Error("Question not provided correctly.");
+        }
+        const newQuestion = await Question.create(data.question);
+        for (let answer of data.answers) {
+            answer.question_id = newQuestion.id;
+            Answer.create(answer);
+        }
         res.status(201).json(newQuestion);
     } catch (err) {
         res.status(404).json({ error: err.message });
@@ -79,9 +88,9 @@ async function destroy(req, res) {
 
 async function logAnswer(req, res) {
     try {
-        res.sendStatus(501)
+        res.sendStatus(501);
     } catch (err) {
-        res.status(500).json({error: err.message})
+        res.status(500).json({ error: err.message });
     }
 }
 
@@ -91,5 +100,5 @@ module.exports = {
     create,
     destroy,
     getQuestionsByCategory,
-    logAnswer
+    logAnswer,
 };

@@ -35,8 +35,20 @@ async function create(req, res) {
     }
 }
 
+async function destroy(req, res) {
+    try {
+        const id = parseInt(req.params.id);
+        const category = await Category.getOneById(id);
+        const result = await category.destroy();
+        res.status(204).json(result);
+    } catch (err) {
+        res.status(404).json({ error: err.message });
+    }
+}
+
 module.exports = {
     index,
     show,
     create,
+    destroy,
 };

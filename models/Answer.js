@@ -13,10 +13,10 @@ class Answer {
         return response.rows.map((g) => new Answer(g));
     }
 
-    static async create({ id, question_id, answer, correct }) {
+    static async create({ question_id, answer, correct }) {
         const response = await db.query(
-            "INSERT INTO answers (id, question_id, answer, correct) VALUES ($1, $2, $3, $4) RETURNING *",
-            [id, question_id, answer, correct]
+            "INSERT INTO answers (question_id, answer, correct) VALUES ($1, $2, $3) RETURNING *",
+            [question_id, answer, correct]
         );
         const newId = response.rows[0].id;
         const newAnswer = await Answer.getOneById(newId);

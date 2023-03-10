@@ -35,6 +35,15 @@ class Category {
         );
         return new Category(response.rows[0]);
     }
+
+    async destroy() {
+        let response = await db.query(
+            "DELETE FROM categories WHERE id = $1 RETURNING *;",
+            [this.id]
+        );
+
+        return new Category(response.rows[0]);
+    }
 }
 
 module.exports = Category;
